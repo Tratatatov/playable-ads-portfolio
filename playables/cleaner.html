@@ -2,52 +2,105 @@
 <script>
 (function() {
   window.__isPlayableMuted = false;
-  var allContexts = [];
-  var allAudios = [];
+  var allContexts = new Set();
+  var allGainNodes = new Set();
+  var allAudios = new Set();
 
-  var AC = window.AudioContext || window.webkitAudioContext;
+  var AC = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
   if (AC) {
+    var origCreateGain = AC.prototype.createGain;
+    AC.prototype.createGain = function() {
+      var gain = origCreateGain.apply(this, arguments);
+      allGainNodes.add(gain);
+      if (window.__isPlayableMuted) {
+        try { gain.gain.setValueAtTime(0, this.currentTime); } catch(e) { gain.gain.value = 0; }
+      }
+      return gain;
+    };
+
+    var origResume = AC.prototype.resume;
+    AC.prototype.resume = function() {
+      allContexts.add(this);
+      if (window.__isPlayableMuted) {
+        return Promise.resolve();
+      }
+      return origResume.apply(this, arguments);
+    };
+
     var OrigAC = AC;
-    var ProxyAC = function() {
-      var ctx = new OrigAC();
-      allContexts.push(ctx);
+    function PatchedAC() {
+      var ctx;
+      try {
+        ctx = Reflect.construct(OrigAC, arguments, PatchedAC);
+      } catch(e) {
+        ctx = new OrigAC();
+      }
+      allContexts.add(ctx);
       if (window.__isPlayableMuted && ctx.suspend) {
         try { ctx.suspend(); } catch(e) {}
       }
       return ctx;
-    };
-    ProxyAC.prototype = OrigAC.prototype;
-    window.AudioContext = ProxyAC;
-    if (window.webkitAudioContext) window.webkitAudioContext = ProxyAC;
+    }
+    PatchedAC.prototype = OrigAC.prototype;
+    window.AudioContext = PatchedAC;
+    if (window.webkitAudioContext) window.webkitAudioContext = PatchedAC;
+    if (window.mozAudioContext) window.mozAudioContext = PatchedAC;
   }
 
-  if (window.HTMLAudioElement && HTMLAudioElement.prototype.play) {
-    var origPlay = HTMLAudioElement.prototype.play;
-    HTMLAudioElement.prototype.play = function() {
-      if (allAudios.indexOf(this) === -1) allAudios.push(this);
-      if (window.__isPlayableMuted) this.muted = true;
+  if (window.HTMLMediaElement) {
+    var origPlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function() {
+      allAudios.add(this);
+      if (window.__isPlayableMuted) {
+        this.muted = true;
+      }
       return origPlay.apply(this, arguments);
     };
   }
 
-  function applyMute(muted) {
+  if (window.AudioBufferSourceNode) {
+    var origStart = AudioBufferSourceNode.prototype.start;
+    AudioBufferSourceNode.prototype.start = function() {
+      if (this.context) {
+        allContexts.add(this.context);
+        if (window.__isPlayableMuted && this.context.suspend) {
+          try { this.context.suspend(); } catch(e) {}
+        }
+      }
+      return origStart.apply(this, arguments);
+    };
+  }
+
+  function setMute(muted) {
     window.__isPlayableMuted = muted;
-    for (var i = 0; i < allContexts.length; i++) {
+
+    allContexts.forEach(function(ctx) {
       try {
-        var c = allContexts[i];
         if (muted) {
-          if (c.suspend) c.suspend();
+          if (ctx.suspend) ctx.suspend();
         } else {
-          if (c.resume) c.resume();
+          if (ctx.resume) ctx.resume();
         }
       } catch(e) {}
-    }
-    for (var j = 0; j < allAudios.length; j++) {
-      try { allAudios[j].muted = muted; } catch(e) {}
-    }
+    });
+
+    allGainNodes.forEach(function(g) {
+      try {
+        if (muted) {
+          g.gain.value = 0;
+        } else {
+          if (g.gain.value === 0) g.gain.value = 1;
+        }
+      } catch(e) {}
+    });
+
+    allAudios.forEach(function(el) {
+      try { el.muted = muted; } catch(e) {}
+    });
     document.querySelectorAll('audio, video').forEach(function(el) {
       try { el.muted = muted; } catch(e) {}
     });
+
     try {
       if (window.cc && window.cc.audioEngine) {
         if (muted) {
@@ -61,17 +114,17 @@
     } catch(e) {}
   }
 
-  window.__setPlayableMuted = applyMute;
+  window.__setPlayableMuted = setMute;
 
-  window.addEventListener('message', function(ev) {
-    if (!ev || !ev.data) return;
-    if (ev.data.type === 'mute' || ev.data.action === 'mute') {
-      var m = ev.data.isMuted !== undefined ? ev.data.isMuted : true;
-      applyMute(m);
-    } else if (ev.data.type === 'unmute' || ev.data.action === 'unmute') {
-      applyMute(false);
-    } else if (ev.data.type === 'toggle_sound') {
-      applyMute(!ev.data.soundOn);
+  window.addEventListener('message', function(e) {
+    if (!e || !e.data) return;
+    if (e.data.type === 'mute' || e.data.action === 'mute') {
+      var m = (e.data.isMuted !== undefined) ? e.data.isMuted : true;
+      setMute(m);
+    } else if (e.data.type === 'unmute' || e.data.action === 'unmute') {
+      setMute(false);
+    } else if (e.data.type === 'toggle_sound') {
+      setMute(!e.data.soundOn);
     }
   });
 })();

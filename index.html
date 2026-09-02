@@ -403,11 +403,66 @@
       margin-bottom: 64px;
     }
 
+    .pause-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 40;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.25s ease;
+    }
+
+    .pause-overlay.active {
+      display: flex;
+    }
+
+    .pause-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+      transition: transform 0.2s;
+    }
+
+    .pause-overlay:hover .pause-circle {
+      transform: scale(1.1);
+    }
+
+    .pause-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .pause-subtext {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .ctrl-btn.btn-paused {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.6);
+      color: #a5b4fc;
+    }
+
     .video-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
+      border-radius: 22px;
+      padding: 10px;
       backdrop-filter: blur(14px);
       display: flex;
       flex-direction: column;
@@ -423,7 +478,7 @@
     .video-player-box {
       position: relative;
       width: 100%;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
       background: #000;
       aspect-ratio: 9 / 16;
@@ -758,7 +813,7 @@
       <div class="hero-actions">
         <a href="#playables" class="btn btn-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Интерактивные плейаблы
+          Playable Ads
         </a>
         <a href="#videos" class="btn btn-secondary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
@@ -773,7 +828,7 @@
 
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchFilter('all', this)">⚡ Все проекты</button>
-      <button class="tab-btn" onclick="switchFilter('playables', this)">🎮 Интерактивные плейаблы (Live WebGL)</button>
+      <button class="tab-btn" onclick="switchFilter('playables', this)">🎮 Playable Ads</button>
       <button class="tab-btn" onclick="switchFilter('videos', this)">🎬 Видеокреативы</button>
       <button class="tab-btn" onclick="switchFilter('tech', this)">🛠️ Стек & Оптимизация</button>
       <button class="tab-btn" onclick="switchFilter('contact', this)">📇 Контакты / Визитка</button>
@@ -781,13 +836,10 @@
 
     <!-- Section 1: Playables -->
     <section id="playables" class="section-block">
-      <div class="section-title">
+      <div class="section-title" style="margin-bottom: 24px;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Интерактивные плейаблы (Live в симуляторе)
+        Playable Ads
       </div>
-      <p class="section-desc">
-        Попробуйте сыграть прямо в браузере внутри смартфона! Вы можете перезагрузить раунд, открыть в полный экран или отсканировать QR-код для моментального теста на телефоне.
-      </p>
 
       <div class="playables-grid">
         
@@ -819,11 +871,22 @@
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 ></iframe>
+                <div id="pause-overlay-cleaner" class="pause-overlay" onclick="togglePausePlayable('cleaner')">
+                  <div class="pause-circle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </div>
+                  <div class="pause-text">На паузе</div>
+                  <div class="pause-subtext">Нажмите в любое место, чтобы продолжить</div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="device-controls">
+            <button id="btn-pause-cleaner" class="ctrl-btn" onclick="togglePausePlayable('cleaner')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              Пауза
+            </button>
             <button class="ctrl-btn" onclick="reloadPlayable('iframe-cleaner')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               Рестарт
@@ -871,11 +934,22 @@
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 ></iframe>
+                <div id="pause-overlay-hole" class="pause-overlay" onclick="togglePausePlayable('hole')">
+                  <div class="pause-circle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </div>
+                  <div class="pause-text">На паузе</div>
+                  <div class="pause-subtext">Нажмите в любое место, чтобы продолжить</div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="device-controls">
+            <button id="btn-pause-hole" class="ctrl-btn" onclick="togglePausePlayable('hole')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              Пауза
+            </button>
             <button class="ctrl-btn" onclick="reloadPlayable('iframe-hole')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               Рестарт
@@ -927,17 +1001,6 @@
             </div>
             <div class="video-duration">0:28</div>
           </div>
-          <div class="video-details">
-            <div class="video-title">Main Campaign Showcase</div>
-            <div class="video-meta">
-              Полный интерактивный сценарий: посадка пассажиров, проезд перекрестков и победный экран.
-            </div>
-            <div class="tags-row">
-              <span class="tag">1440p Source</span>
-              <span class="tag tag-highlight">Core Loop</span>
-              <span class="tag">60 FPS</span>
-            </div>
-          </div>
         </div>
 
         <!-- Video 2 -->
@@ -959,17 +1022,6 @@
               </div>
             </div>
             <div class="video-duration">0:19</div>
-          </div>
-          <div class="video-details">
-            <div class="video-title">Two Taxis Coordination</div>
-            <div class="video-meta">
-              Сценарий с несколькими машинами: точный расчет таймингов движения и быстрая реакция на трафик.
-            </div>
-            <div class="tags-row">
-              <span class="tag">1440p Source</span>
-              <span class="tag tag-highlight">Multi-car</span>
-              <span class="tag">Fast Paced</span>
-            </div>
           </div>
         </div>
 
@@ -993,17 +1045,6 @@
             </div>
             <div class="video-duration">0:26</div>
           </div>
-          <div class="video-details">
-            <div class="video-title">Sportscar City Rush</div>
-            <div class="video-meta">
-              Скоростной заезд на спорткаре по улицам города. Демонстрация динамики и повышенной сложности.
-            </div>
-            <div class="tags-row">
-              <span class="tag">1440p Source</span>
-              <span class="tag tag-highlight">Speed & Flow</span>
-              <span class="tag">High Energy</span>
-            </div>
-          </div>
         </div>
 
         <!-- Video 4 -->
@@ -1025,17 +1066,6 @@
               </div>
             </div>
             <div class="video-duration">0:32</div>
-          </div>
-          <div class="video-details">
-            <div class="video-title">Tramway Crossing & Obstacles</div>
-            <div class="video-meta">
-              Сложный перекресток с трамвайными путями. Демонстрация опасных моментов и интерактивных триггеров.
-            </div>
-            <div class="tags-row">
-              <span class="tag">1440p Source</span>
-              <span class="tag tag-highlight">Obstacles</span>
-              <span class="tag">Fail State UX</span>
-            </div>
           </div>
         </div>
 
@@ -1189,6 +1219,36 @@
       if (iframe) {
         iframe.src = iframe.src;
         showToast('Плейабл перезапущен!');
+      }
+    }
+
+    function togglePausePlayable(id) {
+      const overlay = document.getElementById('pause-overlay-' + id);
+      const iframe = document.getElementById('iframe-' + id);
+      const btn = document.getElementById('btn-pause-' + id);
+      if (!overlay || !iframe || !btn) return;
+
+      const isPaused = overlay.classList.toggle('active');
+      if (isPaused) {
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Продолжить';
+        btn.classList.add('btn-paused');
+        iframe.style.pointerEvents = 'none';
+        iframe.style.filter = 'blur(2px) brightness(0.6)';
+        try {
+          iframe.contentWindow.postMessage({ type: 'pause', action: 'pause' }, '*');
+          iframe.contentWindow.postMessage('pause', '*');
+        } catch(e) {}
+        showToast('Плейабл на паузе');
+      } else {
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Пауза';
+        btn.classList.remove('btn-paused');
+        iframe.style.pointerEvents = 'auto';
+        iframe.style.filter = 'none';
+        try {
+          iframe.contentWindow.postMessage({ type: 'resume', action: 'resume' }, '*');
+          iframe.contentWindow.postMessage('resume', '*');
+        } catch(e) {}
+        showToast('Игра продолжается');
       }
     }
 

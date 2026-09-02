@@ -787,21 +787,6 @@
     <span id="toast-text">Скопировано!</span>
   </div>
 
-  <div id="qrModal" class="modal-backdrop" onclick="closeQrModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeQrModal()">&times;</button>
-      <h4 id="qrModalTitle" style="font-size: 18px; font-weight: 700; color: #fff;">Тест плейабла на телефоне</h4>
-      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Наведите камеру смартфона, чтобы открыть плейабл прямо в мобильном браузере</p>
-      <div class="qr-box">
-        <img id="qrImage" src="" alt="QR Code" />
-      </div>
-      <div style="display: flex; justify-content: center; gap: 8px;">
-        <a id="qrDirectLink" href="#" target="_blank" class="btn btn-secondary" style="font-size: 13px; padding: 8px 16px;">
-          Открыть в новой вкладке ↗
-        </a>
-      </div>
-    </div>
-  </div>
 
   <div class="container">
     <header style="padding: 48px 0 28px;">
@@ -828,7 +813,7 @@
                 <iframe 
                   id="iframe-cleaner"
                   class="playable-iframe"
-                  src="https://clean-playable.vercel.app/"
+                  src="playables/cleaner.html"
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 ></iframe>
@@ -851,26 +836,14 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               Пауза
             </button>
-            <button id="btn-sound-cleaner" class="ctrl-btn" onclick="toggleSoundPlayable('cleaner')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-              Звук
-            </button>
             <button class="ctrl-btn" onclick="reloadPlayable('iframe-cleaner')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               Рестарт
             </button>
-            <button class="ctrl-btn" onclick="openFullscreen('iframe-cleaner')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-              Фулскрин
+            <button id="btn-sound-cleaner" class="ctrl-btn" onclick="toggleSoundPlayable('cleaner')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              Звук
             </button>
-            <button class="ctrl-btn" onclick="openQrModal('Late Night Cleaner', 'https://clean-playable.vercel.app/')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              QR-код на телефон
-            </button>
-            <a href="https://clean-playable.vercel.app/" target="_blank" class="ctrl-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-              В новой вкладке
-            </a>
           </div>
         </div>
 
@@ -883,7 +856,7 @@
                 <iframe 
                   id="iframe-hole"
                   class="playable-iframe"
-                  src="https://hole-game-ad-final.vercel.app/"
+                  src="playables/hole.html"
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 ></iframe>
@@ -906,26 +879,14 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               Пауза
             </button>
-            <button id="btn-sound-hole" class="ctrl-btn" onclick="toggleSoundPlayable('hole')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-              Звук
-            </button>
             <button class="ctrl-btn" onclick="reloadPlayable('iframe-hole')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               Рестарт
             </button>
-            <button class="ctrl-btn" onclick="openFullscreen('iframe-hole')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-              Фулскрин
+            <button id="btn-sound-hole" class="ctrl-btn" onclick="toggleSoundPlayable('hole')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              Звук
             </button>
-            <button class="ctrl-btn" onclick="openQrModal('Hole Game Ad', 'https://hole-game-ad-final.vercel.app/')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              QR-код на телефон
-            </button>
-            <a href="https://hole-game-ad-final.vercel.app/" target="_blank" class="ctrl-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-              В новой вкладке
-            </a>
           </div>
         </div>
 
@@ -1089,52 +1050,49 @@
       const badge = document.getElementById('mute-badge-' + id);
       const iframe = document.getElementById('iframe-' + id);
 
-      if (!isSoundOn) {
-        // Muted
-        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg> Без звука';
+      const isMuted = !isSoundOn;
+
+      if (isMuted) {
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg> Без звука';
         btn.classList.add('btn-muted');
         if (badge) badge.style.display = 'flex';
-        
-        try {
-          iframe.contentWindow.postMessage({ type: 'mute', isMuted: true }, '*');
-          iframe.contentWindow.postMessage({ type: 'plbx_mute', muted: true }, '*');
-          iframe.contentWindow.postMessage({ action: 'mute' }, '*');
-          iframe.contentWindow.postMessage('mute', '*');
-          const doc = iframe.contentDocument || iframe.contentWindow.document;
-          if (doc) doc.querySelectorAll('audio, video').forEach(a => a.muted = true);
-        } catch(e) {}
-        
         showToast('Звук отключен');
       } else {
-        // Unmuted
         btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Звук';
         btn.classList.remove('btn-muted');
         if (badge) badge.style.display = 'none';
-
-        try {
-          iframe.contentWindow.postMessage({ type: 'mute', isMuted: false }, '*');
-          iframe.contentWindow.postMessage({ type: 'plbx_mute', muted: false }, '*');
-          iframe.contentWindow.postMessage({ action: 'unmute' }, '*');
-          iframe.contentWindow.postMessage('unmute', '*');
-          const doc = iframe.contentDocument || iframe.contentWindow.document;
-          if (doc) doc.querySelectorAll('audio, video').forEach(a => a.muted = false);
-        } catch(e) {}
-
         showToast('Звук включен');
       }
-    }
 
-    function openFullscreen(iframeId) {
-      const iframe = document.getElementById(iframeId);
-      if (iframe) {
-        if (iframe.requestFullscreen) {
-          iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-          iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-          iframe.msRequestFullscreen();
+      // 1. Direct function call to injected controller
+      try {
+        if (iframe && iframe.contentWindow && typeof iframe.contentWindow.__setPlayableMuted === 'function') {
+          iframe.contentWindow.__setPlayableMuted(isMuted);
         }
-      }
+      } catch(e) {}
+
+      // 2. postMessage
+      try {
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'mute', isMuted: isMuted }, '*');
+          iframe.contentWindow.postMessage({ action: isMuted ? 'mute' : 'unmute' }, '*');
+        }
+      } catch(e) {}
+
+      // 3. Direct AudioContext and DOM access on same origin
+      try {
+        const win = iframe.contentWindow;
+        if (win) {
+          if (win.cc && win.cc.audioEngine) {
+            win.cc.audioEngine.setMusicVolume(isMuted ? 0 : 1);
+            win.cc.audioEngine.setEffectsVolume(isMuted ? 0 : 1);
+          }
+          const doc = iframe.contentDocument || win.document;
+          if (doc) {
+            doc.querySelectorAll('audio, video').forEach(a => a.muted = isMuted);
+          }
+        }
+      } catch(e) {}
     }
 
     function toggleVideoPlay(video) {
@@ -1156,19 +1114,6 @@
         video.pause();
         overlay.classList.remove('playing');
       }
-    }
-
-    function openQrModal(title, url) {
-      const modal = document.getElementById('qrModal');
-      document.getElementById('qrModalTitle').innerText = title;
-      document.getElementById('qrDirectLink').href = url;
-      const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(url);
-      document.getElementById('qrImage').src = qrApiUrl;
-      modal.classList.add('open');
-    }
-
-    function closeQrModal() {
-      document.getElementById('qrModal').classList.remove('open');
     }
 
     function showToast(text) {

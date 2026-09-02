@@ -458,6 +458,31 @@
       color: #a5b4fc;
     }
 
+    .ctrl-btn.btn-muted {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+    }
+
+    .phone-mute-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+      z-index: 25;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+
     .video-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -871,6 +896,9 @@
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 ></iframe>
+                <div id="mute-badge-cleaner" class="phone-mute-badge" style="display: none;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                </div>
                 <div id="pause-overlay-cleaner" class="pause-overlay" onclick="togglePausePlayable('cleaner')">
                   <div class="pause-circle">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -886,6 +914,10 @@
             <button id="btn-pause-cleaner" class="ctrl-btn" onclick="togglePausePlayable('cleaner')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               Пауза
+            </button>
+            <button id="btn-sound-cleaner" class="ctrl-btn" onclick="toggleSoundPlayable('cleaner')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              Звук
             </button>
             <button class="ctrl-btn" onclick="reloadPlayable('iframe-cleaner')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
@@ -934,6 +966,9 @@
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 ></iframe>
+                <div id="mute-badge-hole" class="phone-mute-badge" style="display: none;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                </div>
                 <div id="pause-overlay-hole" class="pause-overlay" onclick="togglePausePlayable('hole')">
                   <div class="pause-circle">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -949,6 +984,10 @@
             <button id="btn-pause-hole" class="ctrl-btn" onclick="togglePausePlayable('hole')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               Пауза
+            </button>
+            <button id="btn-sound-hole" class="ctrl-btn" onclick="toggleSoundPlayable('hole')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              Звук
             </button>
             <button class="ctrl-btn" onclick="reloadPlayable('iframe-hole')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
@@ -1249,6 +1288,53 @@
           iframe.contentWindow.postMessage('resume', '*');
         } catch(e) {}
         showToast('Игра продолжается');
+      }
+    }
+
+    const soundStates = {
+      cleaner: true,
+      hole: true
+    };
+
+    function toggleSoundPlayable(id) {
+      soundStates[id] = !soundStates[id];
+      const isSoundOn = soundStates[id];
+      const btn = document.getElementById('btn-sound-' + id);
+      const badge = document.getElementById('mute-badge-' + id);
+      const iframe = document.getElementById('iframe-' + id);
+
+      if (!isSoundOn) {
+        // Muted
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg> Без звука';
+        btn.classList.add('btn-muted');
+        if (badge) badge.style.display = 'flex';
+        
+        try {
+          iframe.contentWindow.postMessage({ type: 'mute', isMuted: true }, '*');
+          iframe.contentWindow.postMessage({ type: 'plbx_mute', muted: true }, '*');
+          iframe.contentWindow.postMessage({ action: 'mute' }, '*');
+          iframe.contentWindow.postMessage('mute', '*');
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          if (doc) doc.querySelectorAll('audio, video').forEach(a => a.muted = true);
+        } catch(e) {}
+        
+        showToast('Звук отключен');
+      } else {
+        // Unmuted
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Звук';
+        btn.classList.remove('btn-muted');
+        if (badge) badge.style.display = 'none';
+
+        try {
+          iframe.contentWindow.postMessage({ type: 'mute', isMuted: false }, '*');
+          iframe.contentWindow.postMessage({ type: 'plbx_mute', muted: false }, '*');
+          iframe.contentWindow.postMessage({ action: 'unmute' }, '*');
+          iframe.contentWindow.postMessage('unmute', '*');
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          if (doc) doc.querySelectorAll('audio, video').forEach(a => a.muted = false);
+        } catch(e) {}
+
+        showToast('Звук включен');
       }
     }
 

@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Даниил Пономарев — Playable Ads Developer Portfolio</title>
+  <meta name="description" content="Портфолио разработчика Playable Ads: интерактивные плейаблы на WebGL/Cocos/PixiJS, видеокреативы, оптимизация для мобильных сетей." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #090a0f;
+      --bg-card: rgba(18, 20, 29, 0.75);
+      --bg-card-hover: rgba(28, 32, 48, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.35);
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.4);
+      --accent: #06b6d4;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.18), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 40%, rgba(6, 182, 212, 0.12), transparent),
+        radial-gradient(ellipse 50% 30% at 0% 80%, rgba(139, 92, 246, 0.12), transparent);
+      background-attachment: fixed;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #090a0f; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      padding: 48px 0 32px;
+      position: relative;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .hero-title {
+      font-size: clamp(34px, 5.5vw, 60px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 70%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted);
+      max-width: 760px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .meta-tag svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(99, 102, 241, 0.55);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #f1f5f9;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      margin: 40px 0 36px;
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      color: #ffffff;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-size: 15px;
+      max-width: 680px;
+    }
+
+    .playables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+
+    @media (max-width: 768px) {
+      .playables-grid { grid-template-columns: 1fr; }
+    }
+
+    .playable-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .playable-card:hover {
+      border-color: var(--border-accent);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+    }
+
+    .tag-highlight {
+      background: rgba(6, 182, 212, 0.12);
+      border-color: rgba(6, 182, 212, 0.3);
+      color: #38bdf8;
+    }
+
+    .device-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .phone-frame {
+      width: 320px;
+      height: 570px;
+      background: #000000;
+      border-radius: 44px;
+      border: 9px solid #232632;
+      box-shadow: 
+        0 0 0 2px #383c4e,
+        0 25px 50px -12px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(99, 102, 241, 0.15);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-island {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85px;
+      height: 20px;
+      background: #111217;
+      border-radius: 20px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      pointer-events: none;
+    }
+
+    .camera-lens {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #040817;
+      border: 1px solid #1e293b;
+    }
+
+    .iframe-container {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      position: relative;
+    }
+
+    .playable-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: #090a0f;
+    }
+
+    .device-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+
+    .video-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .video-player-box {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 9 / 16;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .video-player-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+    }
+
+    .video-overlay-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.25);
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .video-overlay-play.playing {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .play-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+      transition: transform 0.2s;
+    }
+
+    .video-card:hover .play-circle {
+      transform: scale(1.1);
+    }
+
+    .video-duration {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .video-details {
+      padding: 16px 4px 4px;
+    }
+
+    .video-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .video-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .tech-section {
+      background: linear-gradient(180deg, rgba(18, 20, 29, 0.6), rgba(12, 14, 20, 0.9));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      margin-bottom: 64px;
+      backdrop-filter: blur(16px);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .skill-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .skill-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .skill-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #818cf8;
+    }
+
+    .skill-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .skill-list {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skill-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-list li::before {
+      content: "•";
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .business-card-section {
+      margin-bottom: 80px;
+    }
+
+    .contact-card {
+      background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15), transparent 50%),
+                  radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.12), transparent 50%),
+                  rgba(18, 20, 29, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 28px;
+      padding: 48px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .contact-info h3 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .contact-info p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 540px;
+      line-height: 1.6;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-content {
+      background: #141722;
+      border: 1px solid var(--border-accent);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .qr-box {
+      background: #fff;
+      padding: 16px;
+      border-radius: 16px;
+      display: inline-block;
+      margin: 20px 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .qr-box img {
+      width: 200px;
+      height: 200px;
+      display: block;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0 48px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e1b4b;
+      border: 1px solid #6366f1;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toast-text">Скопировано!</span>
+  </div>
+
+  <div id="qrModal" class="modal-backdrop" onclick="closeQrModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeQrModal()">&times;</button>
+      <h4 id="qrModalTitle" style="font-size: 18px; font-weight: 700; color: #fff;">Тест плейабла на телефоне</h4>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Наведите камеру смартфона, чтобы открыть плейабл прямо в мобильном браузере</p>
+      <div class="qr-box">
+        <img id="qrImage" src="" alt="QR Code" />
+      </div>
+      <div style="display: flex; justify-content: center; gap: 8px;">
+        <a id="qrDirectLink" href="#" target="_blank" class="btn btn-secondary" style="font-size: 13px; padding: 8px 16px;">
+          Открыть в новой вкладке ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        Available for Playable Ads Projects & UA Creatives
+      </div>
+
+      <h1 class="hero-title">
+        Даниил Пономарев
+      </h1>
+      <p class="hero-subtitle">
+        Playable Ads Developer & Creative Technologist. Разработка высококонверсионных интерактивных плейаблов, WebGL 3D/2D мини-игр и видеокреативов под топовые мобильные рекламные сети.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Размер сборки: &lt;2-5 MB (Single HTML)
+        </div>
+        <div class="meta-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          WebGL / Cocos / PixiJS / Three.js
+        </div>
+        <div class="meta-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          MRAID 2.0 / 3.0 & Responsive
+        </div>
+        <div class="meta-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          AppLovin • Unity • Mintegral • IronSource • TikTok
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#playables" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Интерактивные плейаблы
+        </a>
+        <a href="#videos" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Видеокреативы
+        </a>
+        <a href="https://github.com/Tratatatov" target="_blank" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub (Tratatatov)
+        </a>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchFilter('all', this)">⚡ Все проекты</button>
+      <button class="tab-btn" onclick="switchFilter('playables', this)">🎮 Интерактивные плейаблы (Live WebGL)</button>
+      <button class="tab-btn" onclick="switchFilter('videos', this)">🎬 Видеокреативы (Pick Me Up)</button>
+      <button class="tab-btn" onclick="switchFilter('tech', this)">🛠️ Стек & Оптимизация</button>
+      <button class="tab-btn" onclick="switchFilter('contact', this)">📇 Контакты / Визитка</button>
+    </div>
+
+    <!-- Section 1: Playables -->
+    <section id="playables" class="section-block">
+      <div class="section-title">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Интерактивные плейаблы (Live в симуляторе)
+      </div>
+      <p class="section-desc">
+        Попробуйте сыграть прямо в браузере внутри смартфона! Вы можете перезагрузить раунд, открыть в полный экран или отсканировать QR-код для моментального теста на телефоне.
+      </p>
+
+      <div class="playables-grid">
+        
+        <!-- Playable 1 -->
+        <div class="playable-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Late Night Cleaner</div>
+              <div class="card-desc">
+                Атмосферный 3D плейабл с механикой ночной уборки. Реалистичная физика мусора, взаимодействие с окружением, световые эффекты и плотный геймплейный онбординг.
+              </div>
+              <div class="tags-row">
+                <span class="tag tag-highlight">3D WebGL</span>
+                <span class="tag">Physics Interaction</span>
+                <span class="tag">Horror / Mystery</span>
+                <span class="tag">Zero Loading Time</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-wrapper">
+            <div class="phone-frame" id="phone-cleaner">
+              <div class="phone-island"><div class="camera-lens"></div></div>
+              <div class="iframe-container">
+                <iframe 
+                  id="iframe-cleaner"
+                  class="playable-iframe"
+                  src="https://clean-playable.vercel.app/"
+                  loading="lazy"
+                  allow="autoplay; fullscreen"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-controls">
+            <button class="ctrl-btn" onclick="reloadPlayable('iframe-cleaner')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Рестарт
+            </button>
+            <button class="ctrl-btn" onclick="openFullscreen('iframe-cleaner')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+              Фулскрин
+            </button>
+            <button class="ctrl-btn" onclick="openQrModal('Late Night Cleaner', 'https://clean-playable.vercel.app/')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              QR-код на телефон
+            </button>
+            <a href="https://clean-playable.vercel.app/" target="_blank" class="ctrl-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              В новой вкладке
+            </a>
+          </div>
+        </div>
+
+        <!-- Playable 2 -->
+        <div class="playable-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Black Hole Game Ad</div>
+              <div class="card-desc">
+                Гиперказуальный плейабл с механикой черной дыры. Мгновенная отзывчивость с первого тапа, физика затягивания и падения объектов, динамический рост радиуса и сочный фидбек.
+              </div>
+              <div class="tags-row">
+                <span class="tag tag-highlight">Hypercasual Arcade</span>
+                <span class="tag">High CTR Mechanic</span>
+                <span class="tag">Physics Drop</span>
+                <span class="tag">Instant Engagement</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-wrapper">
+            <div class="phone-frame" id="phone-hole">
+              <div class="phone-island"><div class="camera-lens"></div></div>
+              <div class="iframe-container">
+                <iframe 
+                  id="iframe-hole"
+                  class="playable-iframe"
+                  src="https://hole-game-ad-final.vercel.app/"
+                  loading="lazy"
+                  allow="autoplay; fullscreen"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-controls">
+            <button class="ctrl-btn" onclick="reloadPlayable('iframe-hole')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Рестарт
+            </button>
+            <button class="ctrl-btn" onclick="openFullscreen('iframe-hole')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+              Фулскрин
+            </button>
+            <button class="ctrl-btn" onclick="openQrModal('Hole Game Ad', 'https://hole-game-ad-final.vercel.app/')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              QR-код на телефон
+            </button>
+            <a href="https://hole-game-ad-final.vercel.app/" target="_blank" class="ctrl-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              В новой вкладке
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 2: Videos -->
+    <section id="videos" class="section-block">
+      <div class="section-title">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Видеокреативы (Геймплей Pick Me Up)
+      </div>
+      <p class="section-desc">
+        Геймплейные нарезки и креативы для маркетинга и тестирования гипотез в рекламных кампаниях.
+      </p>
+
+      <div class="videos-grid">
+
+        <!-- Video 1 -->
+        <div class="video-card">
+          <div class="video-player-box">
+            <video 
+              id="vid-main"
+              poster="thumbnails/pickmeup_main.jpg"
+              playsinline
+              loop
+              muted
+              onclick="toggleVideoPlay(this)"
+            >
+              <source src="videos/pickmeup_main.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-main'))">
+              <div class="play-circle">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+            <div class="video-duration">0:28</div>
+          </div>
+          <div class="video-details">
+            <div class="video-title">Pick Me Up — Main Campaign</div>
+            <div class="video-meta">
+              Полный интерактивный сценарий: посадка пассажиров, проезд перекрестков и победный экран.
+            </div>
+            <div class="tags-row">
+              <span class="tag">1440p Source</span>
+              <span class="tag tag-highlight">Core Loop</span>
+              <span class="tag">60 FPS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="video-card">
+          <div class="video-player-box">
+            <video 
+              id="vid-taxis"
+              poster="thumbnails/pickmeup_two_taxis.jpg"
+              playsinline
+              loop
+              muted
+              onclick="toggleVideoPlay(this)"
+            >
+              <source src="videos/pickmeup_two_taxis.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-taxis'))">
+              <div class="play-circle">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+            <div class="video-duration">0:19</div>
+          </div>
+          <div class="video-details">
+            <div class="video-title">Two Taxis Coordination</div>
+            <div class="video-meta">
+              Сценарий с несколькими машинами: точный расчет таймингов движения и быстрая реакция на трафик.
+            </div>
+            <div class="tags-row">
+              <span class="tag">1440p Source</span>
+              <span class="tag tag-highlight">Multi-car</span>
+              <span class="tag">Fast Paced</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="video-card">
+          <div class="video-player-box">
+            <video 
+              id="vid-sportcar"
+              poster="thumbnails/pickmeup_sportcar.jpg"
+              playsinline
+              loop
+              muted
+              onclick="toggleVideoPlay(this)"
+            >
+              <source src="videos/pickmeup_sportcar.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-sportcar'))">
+              <div class="play-circle">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+            <div class="video-duration">0:26</div>
+          </div>
+          <div class="video-details">
+            <div class="video-title">Sportscar City Rush</div>
+            <div class="video-meta">
+              Скоростной заезд на спорткаре по улицам города. Демонстрация динамики и повышенной сложности.
+            </div>
+            <div class="tags-row">
+              <span class="tag">1440p Source</span>
+              <span class="tag tag-highlight">Speed & Flow</span>
+              <span class="tag">High Energy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video 4 -->
+        <div class="video-card">
+          <div class="video-player-box">
+            <video 
+              id="vid-tram"
+              poster="thumbnails/pickmeup_tram.jpg"
+              playsinline
+              loop
+              muted
+              onclick="toggleVideoPlay(this)"
+            >
+              <source src="videos/pickmeup_tram.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-tram'))">
+              <div class="play-circle">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+            <div class="video-duration">0:32</div>
+          </div>
+          <div class="video-details">
+            <div class="video-title">Tramway Crossing & Obstacles</div>
+            <div class="video-meta">
+              Сложный перекресток с трамвайными путями. Демонстрация опасных моментов и интерактивных триггеров.
+            </div>
+            <div class="tags-row">
+              <span class="tag">1440p Source</span>
+              <span class="tag tag-highlight">Obstacles</span>
+              <span class="tag">Fail State UX</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 3: Tech -->
+    <section id="tech" class="section-block tech-section">
+      <div class="section-title">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Технический стек & Оптимизация Playable Ads
+      </div>
+      <p style="color: var(--text-muted); font-size: 15px; margin-top: 6px;">
+        Глубокая экспертиза в создании плейаблов, проходящих строгие лимиты мобильных рекламных сетей по весу, производительности и совместимости API.
+      </p>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-header">
+            <div class="skill-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="skill-title">Движки и WebGL</div>
+          </div>
+          <ul class="skill-list">
+            <li>Cocos Creator (2.x / 3.x)</li>
+            <li>Three.js / Babylon.js / WebGL</li>
+            <li>PixiJS & Pure Canvas 2D</li>
+            <li>TypeScript / Современный JavaScript</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <div class="skill-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+            </div>
+            <div class="skill-title">Экстремальная Оптимизация</div>
+          </div>
+          <ul class="skill-list">
+            <li>Сборка в 1 файл (Single HTML Inlining)</li>
+            <li>Сжатие 3D: Draco / Meshopt / Quantization</li>
+            <li>Атласы текстур, WebP, Basis Universal</li>
+            <li>Сжатие звука: 48kbps VBR Vorbis/MP3</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <div class="skill-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div class="skill-title">Рекламные Сети & SDK</div>
+          </div>
+          <ul class="skill-list">
+            <li>AppLovin (MAX / Custom HTML)</li>
+            <li>Unity Ads, IronSource LevelPlay</li>
+            <li>Mintegral, Google Ads (AdMob)</li>
+            <li>TikTok (Pangle), Liftoff, Vungle</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <div class="skill-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div class="skill-title">Инструменты & Пайплайн</div>
+          </div>
+          <ul class="skill-list">
+            <li>Playable Optimizer Studio (собственная утилита)</li>
+            <li>Blender (лоу-поли моделирование, UV)</li>
+            <li>FFmpeg & видео-энкодинг</li>
+            <li>Vite, Webpack, Node.js сборщики</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Contacts -->
+    <section id="contact" class="business-card-section">
+      <div class="contact-card">
+        <div class="contact-info">
+          <h3>Давайте сотрудничать!</h3>
+          <p>
+            Нужен интерактивный плейабл, поднимающий IPM и окупаемость рекламы, или качественный видеокреатив под запуск кампании? Свяжитесь со мной — обсудим задачи и сроки.
+          </p>
+        </div>
+        <div class="contact-links">
+          <a href="https://t.me/Tratatatov" target="_blank" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Написать в Telegram
+          </a>
+          <a href="https://github.com/Tratatatov" target="_blank" class="btn btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub Репозитории
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 Даниил Пономарев • Playable Ads Portfolio • Разработано для демонстрации геймплейных механик и интерактивной рекламы</p>
+    </footer>
+  </div>
+
+  <script>
+    function switchFilter(type, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const playables = document.getElementById('playables');
+      const videos = document.getElementById('videos');
+      const tech = document.getElementById('tech');
+      const contact = document.getElementById('contact');
+
+      if (type === 'all') {
+        playables.style.display = 'block';
+        videos.style.display = 'block';
+        tech.style.display = 'block';
+        contact.style.display = 'block';
+      } else if (type === 'playables') {
+        playables.style.display = 'block';
+        videos.style.display = 'none';
+        tech.style.display = 'none';
+        contact.style.display = 'none';
+        playables.scrollIntoView({ behavior: 'smooth' });
+      } else if (type === 'videos') {
+        playables.style.display = 'none';
+        videos.style.display = 'block';
+        tech.style.display = 'none';
+        contact.style.display = 'none';
+        videos.scrollIntoView({ behavior: 'smooth' });
+      } else if (type === 'tech') {
+        playables.style.display = 'none';
+        videos.style.display = 'none';
+        tech.style.display = 'block';
+        contact.style.display = 'none';
+        tech.scrollIntoView({ behavior: 'smooth' });
+      } else if (type === 'contact') {
+        playables.style.display = 'none';
+        videos.style.display = 'none';
+        tech.style.display = 'none';
+        contact.style.display = 'block';
+        contact.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function reloadPlayable(iframeId) {
+      const iframe = document.getElementById(iframeId);
+      if (iframe) {
+        iframe.src = iframe.src;
+        showToast('Плейабл перезапущен!');
+      }
+    }
+
+    function openFullscreen(iframeId) {
+      const iframe = document.getElementById(iframeId);
+      if (iframe) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }
+    }
+
+    function toggleVideoPlay(video) {
+      const parent = video.closest('.video-player-box');
+      const overlay = parent.querySelector('.video-overlay-play');
+
+      if (video.paused) {
+        document.querySelectorAll('video').forEach(v => {
+          if (v !== video && !v.paused) {
+            v.pause();
+            const ov = v.closest('.video-player-box').querySelector('.video-overlay-play');
+            if (ov) ov.classList.remove('playing');
+          }
+        });
+
+        video.play();
+        overlay.classList.add('playing');
+      } else {
+        video.pause();
+        overlay.classList.remove('playing');
+      }
+    }
+
+    function openQrModal(title, url) {
+      const modal = document.getElementById('qrModal');
+      document.getElementById('qrModalTitle').innerText = title;
+      document.getElementById('qrDirectLink').href = url;
+      const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(url);
+      document.getElementById('qrImage').src = qrApiUrl;
+      modal.classList.add('open');
+    }
+
+    function closeQrModal() {
+      document.getElementById('qrModal').classList.remove('open');
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

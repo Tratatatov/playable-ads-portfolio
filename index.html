@@ -360,6 +360,7 @@
       height: 100%;
       background: #000;
       position: relative;
+      overflow: hidden !important;
     }
 
     .playable-iframe {
@@ -368,6 +369,15 @@
       border: none;
       display: block;
       background: #090a0f;
+      overflow: hidden !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .playable-iframe::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
     }
 
     .device-controls {
@@ -816,8 +826,9 @@
                 <iframe 
                   id="iframe-cleaner"
                   class="playable-iframe"
-                  src="playables/cleaner.html?v=3"
+                  src="playables/cleaner.html?v=4"
                   loading="lazy"
+                  scrolling="no"
                   allow="autoplay; fullscreen"
                 ></iframe>
                 <div id="mute-badge-cleaner" class="phone-mute-badge" style="display: none;">
@@ -859,8 +870,9 @@
                 <iframe 
                   id="iframe-hole"
                   class="playable-iframe"
-                  src="playables/hole.html?v=3"
+                  src="playables/hole.html?v=4"
                   loading="lazy"
+                  scrolling="no"
                   allow="autoplay; fullscreen"
                 ></iframe>
                 <div id="mute-badge-hole" class="phone-mute-badge" style="display: none;">
@@ -997,7 +1009,7 @@
     </section>
 
     <footer>
-      <p>© 2026 Даниил Пономарев • <a href="https://t.me/Tratatatov" target="_blank" style="color: #818cf8; text-decoration: none;">Telegram: @Tratatatov</a> • <a href="https://github.com/Tratatatov" target="_blank" style="color: #94a3b8; text-decoration: none;">GitHub</a></p>
+      <p>© 2026 Даниил Пономарев</p>
     </footer>
   </div>
 

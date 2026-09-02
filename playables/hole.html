@@ -1,4 +1,20 @@
 <!DOCTYPE html><html><head>
+<style>
+  html, body, #GameDiv, #Cocos3dGameContainer, #GameCanvas {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+</style>
 <script>
 (function() {
   window.__isPlayableMuted = false;
@@ -47,14 +63,49 @@
     if (window.mozAudioContext) window.mozAudioContext = PatchedAC;
   }
 
-  if (window.HTMLMediaElement) {
-    var origPlay = HTMLMediaElement.prototype.play;
-    HTMLMediaElement.prototype.play = function() {
-      allAudios.add(this);
-      if (window.__isPlayableMuted) {
-        this.muted = true;
-      }
-      return origPlay.apply(this, arguments);
+  if (window.AudioParam) {
+    var origSetTargetAtTime = AudioParam.prototype.setTargetAtTime;
+    if (origSetTargetAtTime) {
+      AudioParam.prototype.setTargetAtTime = function(target, startTime, timeConstant) {
+        if (window.__isPlayableMuted) target = 0;
+        return origSetTargetAtTime.call(this, target, startTime, timeConstant);
+      };
+    }
+
+    var origSetValueAtTime = AudioParam.prototype.setValueAtTime;
+    if (origSetValueAtTime) {
+      AudioParam.prototype.setValueAtTime = function(value, startTime) {
+        if (window.__isPlayableMuted) value = 0;
+        return origSetValueAtTime.call(this, value, startTime);
+      };
+    }
+
+    var origLinearRamp = AudioParam.prototype.linearRampToValueAtTime;
+    if (origLinearRamp) {
+      AudioParam.prototype.linearRampToValueAtTime = function(value, endTime) {
+        if (window.__isPlayableMuted) value = 0;
+        return origLinearRamp.call(this, value, endTime);
+      };
+    }
+
+    var desc = Object.getOwnPropertyDescriptor(AudioParam.prototype, 'value');
+    if (desc && desc.set) {
+      var origValSet = desc.set;
+      Object.defineProperty(AudioParam.prototype, 'value', {
+        get: function() { return desc.get.call(this); },
+        set: function(val) {
+          if (window.__isPlayableMuted) val = 0;
+          return origValSet.call(this, val);
+        }
+      });
+    }
+  }
+
+  if (window.AudioNode) {
+    var origConnect = AudioNode.prototype.connect;
+    AudioNode.prototype.connect = function() {
+      if (this.context) allContexts.add(this.context);
+      return origConnect.apply(this, arguments);
     };
   }
 
@@ -68,6 +119,15 @@
         }
       }
       return origStart.apply(this, arguments);
+    };
+  }
+
+  if (window.HTMLMediaElement) {
+    var origPlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function() {
+      allAudios.add(this);
+      if (window.__isPlayableMuted) this.muted = true;
+      return origPlay.apply(this, arguments);
     };
   }
 
@@ -89,7 +149,7 @@
         if (muted) {
           g.gain.value = 0;
         } else {
-          if (g.gain.value === 0) g.gain.value = 1;
+          g.gain.value = 1;
         }
       } catch(e) {}
     });

@@ -315,15 +315,17 @@
     }
 
     .phone-frame {
-      width: 320px;
-      height: 570px;
+      width: 408px;
+      height: 862px;
+      max-width: 100%;
+      aspect-ratio: 408 / 862;
       background: #000000;
-      border-radius: 44px;
+      border-radius: 48px;
       border: 9px solid #232632;
       box-shadow: 
         0 0 0 2px #383c4e,
         0 25px 50px -12px rgba(0, 0, 0, 0.7),
-        0 0 30px rgba(99, 102, 241, 0.15);
+        0 0 35px rgba(99, 102, 241, 0.18);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -332,27 +334,27 @@
 
     .phone-island {
       position: absolute;
-      top: 10px;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%);
-      width: 85px;
-      height: 20px;
-      background: #111217;
+      width: 105px;
+      height: 26px;
+      background: #000000;
       border-radius: 20px;
       z-index: 20;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding-right: 8px;
+      padding-right: 9px;
       pointer-events: none;
     }
 
     .camera-lens {
-      width: 7px;
-      height: 7px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      background: #040817;
-      border: 1px solid #1e293b;
+      background: #090e1f;
+      border: 1.5px solid #1e293b;
     }
 
     .iframe-container {
@@ -659,63 +661,6 @@
       border-color: rgba(239, 68, 68, 0.6);
     }
 
-    .performance-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px 18px;
-      background: rgba(99, 102, 241, 0.08);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      border-radius: 14px;
-      margin-bottom: 24px;
-      font-size: 13px;
-      color: #cbd5e1;
-    }
-
-    .performance-banner .banner-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .performance-banner .banner-icon {
-      color: #38bdf8;
-      display: flex;
-      align-items: center;
-    }
-
-    .banner-tabs {
-      display: flex;
-      gap: 8px;
-    }
-
-    .banner-tab-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .banner-tab-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-    }
-
-    .banner-tab-btn.active {
-      background: rgba(99, 102, 241, 0.25);
-      border-color: rgba(99, 102, 241, 0.6);
-      color: #a5b4fc;
-    }
 
     .video-card {
       background: var(--bg-card);
@@ -1035,24 +980,6 @@
         Playable Ads
       </div>
 
-      <div class="performance-banner">
-        <div class="banner-info">
-          <span class="banner-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </span>
-          <span>Для максимальной плавности и 60 FPS одновременно запускается <strong>только один</strong> 3D симулятор.</span>
-        </div>
-        <div class="banner-tabs">
-          <button id="tab-cleaner" class="banner-tab-btn" onclick="activatePlayable('cleaner')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Cleaner 3D
-          </button>
-          <button id="tab-hole" class="banner-tab-btn" onclick="activatePlayable('hole')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Hole Game 3D
-          </button>
-        </div>
-      </div>
 
       <div class="playables-grid">
         
@@ -1220,6 +1147,7 @@
             <video 
               id="vid-main"
               poster="thumbnails/pickmeup_main.jpg"
+              preload="metadata"
               playsinline
               loop
               muted
@@ -1242,6 +1170,7 @@
             <video 
               id="vid-taxis"
               poster="thumbnails/pickmeup_two_taxis.jpg"
+              preload="metadata"
               playsinline
               loop
               muted
@@ -1264,6 +1193,7 @@
             <video 
               id="vid-sportcar"
               poster="thumbnails/pickmeup_sportcar.jpg"
+              preload="metadata"
               playsinline
               loop
               muted
@@ -1286,6 +1216,7 @@
             <video 
               id="vid-tram"
               poster="thumbnails/pickmeup_tram.jpg"
+              preload="metadata"
               playsinline
               loop
               muted
@@ -1342,11 +1273,6 @@
 
       currentActivePlayable = id;
 
-      // Update banner tab highlights
-      document.querySelectorAll('.banner-tab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeTab = document.getElementById('tab-' + id);
-      if (activeTab) activeTab.classList.add('active');
-
       const iframe = document.getElementById('iframe-' + id);
       const cover = document.getElementById('cover-' + id);
       const loader = document.getElementById('loader-' + id);
@@ -1376,7 +1302,6 @@
       const pauseOverlay = document.getElementById('pause-overlay-' + id);
       const startBtn = document.getElementById('start-btn-' + id);
       const activeCtrls = document.getElementById('active-controls-' + id);
-      const tab = document.getElementById('tab-' + id);
 
       // Unload iframe completely to release WebGL context and audio
       if (iframe) {
@@ -1394,7 +1319,6 @@
       if (cover) cover.style.display = 'flex';
       if (startBtn) startBtn.style.display = 'inline-flex';
       if (activeCtrls) activeCtrls.style.display = 'none';
-      if (tab) tab.classList.remove('active');
 
       // Reset pause button state
       const btnPause = document.getElementById('btn-pause-' + id);

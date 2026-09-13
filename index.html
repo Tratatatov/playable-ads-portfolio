@@ -315,6 +315,8 @@
     .phone-frame {
       width: 336px;
       height: 708px;
+      --render-size: 225%;
+      --display-scale: 0.444444;
       max-width: 100%;
       aspect-ratio: 390 / 844;
       background: #000000;
@@ -331,19 +333,25 @@
       transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .phone-frame.res-320 {
+    .phone-frame.res-720 {
       width: 336px;
       height: 708px;
+      --render-size: 225%;
+      --display-scale: 0.444444;
     }
 
-    .phone-frame.res-360 {
+    .phone-frame.res-900 {
       width: 376px;
       height: 796px;
+      --render-size: 250%;
+      --display-scale: 0.4;
     }
 
-    .phone-frame.res-390 {
+    .phone-frame.res-1080 {
       width: 408px;
       height: 862px;
+      --render-size: 275.5102%;
+      --display-scale: 0.362963;
     }
 
     .phone-island {
@@ -380,11 +388,13 @@
     }
 
     .playable-iframe {
-      width: 100%;
-      height: 100%;
+      width: var(--render-size);
+      height: var(--render-size);
       border: none;
       display: block;
       background: #090a0f;
+      transform: scale(var(--display-scale));
+      transform-origin: top left;
       overflow: hidden !important;
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
@@ -1045,7 +1055,7 @@
         <!-- Playable 1: Cleaner -->
         <div class="playable-card" id="card-cleaner">
           <div class="device-wrapper">
-            <div class="phone-frame res-320" id="phone-cleaner">
+            <div class="phone-frame res-720" id="phone-cleaner">
               <div class="phone-island"><div class="camera-lens"></div></div>
               <div class="iframe-container">
                 <!-- Cover preview poster (Click to launch) -->
@@ -1091,9 +1101,9 @@
 
           <div class="res-selector-box">
             <span class="res-selector-title">Разрешение:</span>
-            <button class="res-btn active" id="btn-res-320-cleaner" onclick="setSimulatorResolution('cleaner', '320')">320p (Эко 60 FPS)</button>
-            <button class="res-btn" id="btn-res-360-cleaner" onclick="setSimulatorResolution('cleaner', '360')">360p</button>
-            <button class="res-btn" id="btn-res-390-cleaner" onclick="setSimulatorResolution('cleaner', '390')">390p (Full)</button>
+            <button class="res-btn active" id="btn-res-720-cleaner" onclick="setSimulatorResolution('cleaner', '720')">720p</button>
+            <button class="res-btn" id="btn-res-900-cleaner" onclick="setSimulatorResolution('cleaner', '900')">900p</button>
+            <button class="res-btn" id="btn-res-1080-cleaner" onclick="setSimulatorResolution('cleaner', '1080')">1080p (Full)</button>
           </div>
 
           <div class="device-controls">
@@ -1125,7 +1135,7 @@
         <!-- Playable 2: Hole Game -->
         <div class="playable-card" id="card-hole">
           <div class="device-wrapper">
-            <div class="phone-frame res-320" id="phone-hole">
+            <div class="phone-frame res-720" id="phone-hole">
               <div class="phone-island"><div class="camera-lens"></div></div>
               <div class="iframe-container">
                 <!-- Cover preview poster (Click to launch) -->
@@ -1171,9 +1181,9 @@
 
           <div class="res-selector-box">
             <span class="res-selector-title">Разрешение:</span>
-            <button class="res-btn active" id="btn-res-320-hole" onclick="setSimulatorResolution('hole', '320')">320p (Эко 60 FPS)</button>
-            <button class="res-btn" id="btn-res-360-hole" onclick="setSimulatorResolution('hole', '360')">360p</button>
-            <button class="res-btn" id="btn-res-390-hole" onclick="setSimulatorResolution('hole', '390')">390p (Full)</button>
+            <button class="res-btn active" id="btn-res-720-hole" onclick="setSimulatorResolution('hole', '720')">720p</button>
+            <button class="res-btn" id="btn-res-900-hole" onclick="setSimulatorResolution('hole', '900')">900p</button>
+            <button class="res-btn" id="btn-res-1080-hole" onclick="setSimulatorResolution('hole', '1080')">1080p (Full)</button>
           </div>
 
           <div class="device-controls">
@@ -1592,7 +1602,7 @@
       const phone = document.getElementById('phone-' + id);
       if (!phone) return;
 
-      phone.classList.remove('res-320', 'res-360', 'res-390');
+      phone.classList.remove('res-720', 'res-900', 'res-1080');
       phone.classList.add('res-' + res);
 
       const card = document.getElementById('card-' + id);

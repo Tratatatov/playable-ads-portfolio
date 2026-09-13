@@ -497,6 +497,226 @@
       pointer-events: none;
     }
 
+    /* Playable Cover & Single Active System */
+    .playable-cover {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .playable-cover:hover {
+      transform: scale(1.02);
+    }
+
+    .cover-backdrop {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(9, 10, 15, 0.45) 0%, rgba(9, 10, 15, 0.8) 55%, rgba(9, 10, 15, 0.96) 100%);
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+
+    .playable-cover:hover .cover-backdrop {
+      background: linear-gradient(180deg, rgba(9, 10, 15, 0.3) 0%, rgba(9, 10, 15, 0.65) 55%, rgba(9, 10, 15, 0.9) 100%);
+      backdrop-filter: blur(1px);
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      gap: 12px;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #c7d2fe;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cover-play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.7);
+      margin: 6px 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cover-play-btn svg {
+      margin-left: 4px;
+    }
+
+    .playable-cover:hover .cover-play-btn {
+      transform: scale(1.12);
+      box-shadow: 0 0 42px rgba(99, 102, 241, 0.95);
+    }
+
+    .cover-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .cover-hint {
+      font-size: 12px;
+      color: #94a3b8;
+      max-width: 210px;
+      line-height: 1.4;
+    }
+
+    .playable-loader {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 10, 15, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 35;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(99, 102, 241, 0.2);
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+      letter-spacing: 0.02em;
+    }
+
+    .active-controls-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-btn.btn-launch {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border-color: rgba(99, 102, 241, 0.6);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+      padding: 9px 18px;
+    }
+
+    .ctrl-btn.btn-launch:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .ctrl-btn.btn-stop {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+    }
+
+    .ctrl-btn.btn-stop:hover {
+      background: rgba(239, 68, 68, 0.22);
+      color: #fff;
+      border-color: rgba(239, 68, 68, 0.6);
+    }
+
+    .performance-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .performance-banner .banner-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .performance-banner .banner-icon {
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+    }
+
+    .banner-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .banner-tab-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .banner-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .banner-tab-btn.active {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.6);
+      color: #a5b4fc;
+    }
+
     .video-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -810,24 +1030,62 @@
 
     <!-- Section 1: Playables -->
     <section id="playables" class="section-block">
-      <div class="section-title" style="margin-bottom: 24px;">
+      <div class="section-title" style="margin-bottom: 16px;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         Playable Ads
       </div>
 
+      <div class="performance-banner">
+        <div class="banner-info">
+          <span class="banner-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </span>
+          <span>Для максимальной плавности и 60 FPS одновременно запускается <strong>только один</strong> 3D симулятор.</span>
+        </div>
+        <div class="banner-tabs">
+          <button id="tab-cleaner" class="banner-tab-btn" onclick="activatePlayable('cleaner')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Cleaner 3D
+          </button>
+          <button id="tab-hole" class="banner-tab-btn" onclick="activatePlayable('hole')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Hole Game 3D
+          </button>
+        </div>
+      </div>
+
       <div class="playables-grid">
         
-        <!-- Playable 1 -->
-        <div class="playable-card">
+        <!-- Playable 1: Cleaner -->
+        <div class="playable-card" id="card-cleaner">
           <div class="device-wrapper">
             <div class="phone-frame" id="phone-cleaner">
               <div class="phone-island"><div class="camera-lens"></div></div>
               <div class="iframe-container">
+                <!-- Cover preview poster (Click to launch) -->
+                <div id="cover-cleaner" class="playable-cover" style="background-image: url('thumbnails/cleaner_cover.jpg');" onclick="activatePlayable('cleaner')">
+                  <div class="cover-backdrop"></div>
+                  <div class="cover-content">
+                    <div class="cover-badge">3D Cocos WebGL</div>
+                    <div class="cover-play-btn">
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    </div>
+                    <div class="cover-title">Cleaner 3D</div>
+                    <div class="cover-hint">Нажмите для запуска симулятора</div>
+                  </div>
+                </div>
+
+                <!-- Loading spinner -->
+                <div id="loader-cleaner" class="playable-loader" style="display: none;">
+                  <div class="spinner"></div>
+                  <div class="loader-text">Загрузка Cleaner 3D...</div>
+                </div>
+
                 <iframe 
                   id="iframe-cleaner"
                   class="playable-iframe"
-                  src="playables/cleaner.html?v=4"
-                  loading="lazy"
+                  src="about:blank"
+                  data-src="playables/cleaner.html?v=5"
                   scrolling="no"
                   allow="autoplay; fullscreen"
                 ></iframe>
@@ -846,32 +1104,61 @@
           </div>
 
           <div class="device-controls">
-            <button id="btn-pause-cleaner" class="ctrl-btn" onclick="togglePausePlayable('cleaner')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-              Пауза
+            <button id="start-btn-cleaner" class="ctrl-btn btn-launch" onclick="activatePlayable('cleaner')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Запустить симулятор
             </button>
-            <button class="ctrl-btn" onclick="reloadPlayable('iframe-cleaner')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-              Рестарт
-            </button>
-            <button id="btn-sound-cleaner" class="ctrl-btn" onclick="toggleSoundPlayable('cleaner')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-              Звук
-            </button>
+            <div id="active-controls-cleaner" class="active-controls-group" style="display: none;">
+              <button id="btn-pause-cleaner" class="ctrl-btn" onclick="togglePausePlayable('cleaner')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                Пауза
+              </button>
+              <button class="ctrl-btn" onclick="reloadPlayable('cleaner')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Рестарт
+              </button>
+              <button id="btn-sound-cleaner" class="ctrl-btn" onclick="toggleSoundPlayable('cleaner')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                Звук
+              </button>
+              <button class="ctrl-btn btn-stop" onclick="deactivatePlayable('cleaner')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+                Выключить
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Playable 2 -->
-        <div class="playable-card">
+        <!-- Playable 2: Hole Game -->
+        <div class="playable-card" id="card-hole">
           <div class="device-wrapper">
             <div class="phone-frame" id="phone-hole">
               <div class="phone-island"><div class="camera-lens"></div></div>
               <div class="iframe-container">
+                <!-- Cover preview poster (Click to launch) -->
+                <div id="cover-hole" class="playable-cover" style="background-image: url('thumbnails/hole_cover.jpg');" onclick="activatePlayable('hole')">
+                  <div class="cover-backdrop"></div>
+                  <div class="cover-content">
+                    <div class="cover-badge">3D Physics WebGL</div>
+                    <div class="cover-play-btn">
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    </div>
+                    <div class="cover-title">Hole Game 3D</div>
+                    <div class="cover-hint">Нажмите для запуска симулятора</div>
+                  </div>
+                </div>
+
+                <!-- Loading spinner -->
+                <div id="loader-hole" class="playable-loader" style="display: none;">
+                  <div class="spinner"></div>
+                  <div class="loader-text">Загрузка Hole Game 3D...</div>
+                </div>
+
                 <iframe 
                   id="iframe-hole"
                   class="playable-iframe"
-                  src="playables/hole.html?v=4"
-                  loading="lazy"
+                  src="about:blank"
+                  data-src="playables/hole.html?v=5"
                   scrolling="no"
                   allow="autoplay; fullscreen"
                 ></iframe>
@@ -890,18 +1177,28 @@
           </div>
 
           <div class="device-controls">
-            <button id="btn-pause-hole" class="ctrl-btn" onclick="togglePausePlayable('hole')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-              Пауза
+            <button id="start-btn-hole" class="ctrl-btn btn-launch" onclick="activatePlayable('hole')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Запустить симулятор
             </button>
-            <button class="ctrl-btn" onclick="reloadPlayable('iframe-hole')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-              Рестарт
-            </button>
-            <button id="btn-sound-hole" class="ctrl-btn" onclick="toggleSoundPlayable('hole')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-              Звук
-            </button>
+            <div id="active-controls-hole" class="active-controls-group" style="display: none;">
+              <button id="btn-pause-hole" class="ctrl-btn" onclick="togglePausePlayable('hole')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                Пауза
+              </button>
+              <button class="ctrl-btn" onclick="reloadPlayable('hole')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Рестарт
+              </button>
+              <button id="btn-sound-hole" class="ctrl-btn" onclick="toggleSoundPlayable('hole')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                Звук
+              </button>
+              <button class="ctrl-btn btn-stop" onclick="deactivatePlayable('hole')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+                Выключить
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1014,12 +1311,124 @@
   </div>
 
   <script>
+    let currentActivePlayable = null;
 
-    function reloadPlayable(iframeId) {
-      const iframe = document.getElementById(iframeId);
+    const soundStates = {
+      cleaner: true,
+      hole: true
+    };
+
+    function activatePlayable(id) {
+      if (currentActivePlayable === id) {
+        // Already active, scroll into view smoothly if needed
+        const card = document.getElementById('card-' + id);
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // If another playable is currently active, deactivate it to free 100% GPU and memory
+      if (currentActivePlayable) {
+        deactivatePlayable(currentActivePlayable, true);
+      }
+
+      // Pause any playing videos
+      document.querySelectorAll('video').forEach(v => {
+        if (!v.paused) {
+          v.pause();
+          const ov = v.closest('.video-player-box')?.querySelector('.video-overlay-play');
+          if (ov) ov.classList.remove('playing');
+        }
+      });
+
+      currentActivePlayable = id;
+
+      // Update banner tab highlights
+      document.querySelectorAll('.banner-tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeTab = document.getElementById('tab-' + id);
+      if (activeTab) activeTab.classList.add('active');
+
+      const iframe = document.getElementById('iframe-' + id);
+      const cover = document.getElementById('cover-' + id);
+      const loader = document.getElementById('loader-' + id);
+      const startBtn = document.getElementById('start-btn-' + id);
+      const activeCtrls = document.getElementById('active-controls-' + id);
+
+      if (cover) cover.style.display = 'none';
+      if (loader) loader.style.display = 'flex';
+      if (startBtn) startBtn.style.display = 'none';
+      if (activeCtrls) activeCtrls.style.display = 'flex';
+
       if (iframe) {
-        iframe.src = iframe.src;
+        const dataSrc = iframe.getAttribute('data-src');
+        iframe.onload = function() {
+          if (loader) loader.style.display = 'none';
+        };
+        iframe.src = dataSrc;
+      }
+
+      showToast('Запущен симулятор: ' + (id === 'cleaner' ? 'Cleaner 3D' : 'Hole Game 3D'));
+    }
+
+    function deactivatePlayable(id, isSwitching = false) {
+      const iframe = document.getElementById('iframe-' + id);
+      const cover = document.getElementById('cover-' + id);
+      const loader = document.getElementById('loader-' + id);
+      const pauseOverlay = document.getElementById('pause-overlay-' + id);
+      const startBtn = document.getElementById('start-btn-' + id);
+      const activeCtrls = document.getElementById('active-controls-' + id);
+      const tab = document.getElementById('tab-' + id);
+
+      // Unload iframe completely to release WebGL context and audio
+      if (iframe) {
+        iframe.src = 'about:blank';
+      }
+
+      if (loader) loader.style.display = 'none';
+      if (pauseOverlay) {
+        pauseOverlay.classList.remove('active');
+        if (iframe) {
+          iframe.style.pointerEvents = 'auto';
+          iframe.style.filter = 'none';
+        }
+      }
+      if (cover) cover.style.display = 'flex';
+      if (startBtn) startBtn.style.display = 'inline-flex';
+      if (activeCtrls) activeCtrls.style.display = 'none';
+      if (tab) tab.classList.remove('active');
+
+      // Reset pause button state
+      const btnPause = document.getElementById('btn-pause-' + id);
+      if (btnPause) {
+        btnPause.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Пауза';
+        btnPause.classList.remove('btn-paused');
+      }
+
+      // Reset sound state
+      soundStates[id] = true;
+      const btnSound = document.getElementById('btn-sound-' + id);
+      const badgeSound = document.getElementById('mute-badge-' + id);
+      if (btnSound) {
+        btnSound.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Звук';
+        btnSound.classList.remove('btn-muted');
+      }
+      if (badgeSound) badgeSound.style.display = 'none';
+
+      if (currentActivePlayable === id) {
+        currentActivePlayable = null;
+      }
+
+      if (!isSwitching) {
+        showToast('Симулятор выключен');
+      }
+    }
+
+    function reloadPlayable(id) {
+      const iframe = document.getElementById('iframe-' + id);
+      if (iframe && iframe.src && iframe.src !== 'about:blank') {
+        iframe.src = iframe.getAttribute('data-src');
         showToast('Плейабл перезапущен!');
+      } else {
+        activatePlayable(id);
       }
     }
 
@@ -1052,11 +1461,6 @@
         showToast('Игра продолжается');
       }
     }
-
-    const soundStates = {
-      cleaner: true,
-      hole: true
-    };
 
     function toggleSoundPlayable(id) {
       soundStates[id] = !soundStates[id];
@@ -1115,13 +1519,22 @@
       const overlay = parent.querySelector('.video-overlay-play');
 
       if (video.paused) {
+        // Pause any other playing video
         document.querySelectorAll('video').forEach(v => {
           if (v !== video && !v.paused) {
             v.pause();
-            const ov = v.closest('.video-player-box').querySelector('.video-overlay-play');
+            const ov = v.closest('.video-player-box')?.querySelector('.video-overlay-play');
             if (ov) ov.classList.remove('playing');
           }
         });
+
+        // If a playable is currently active, pause it so performance and audio remain pristine
+        if (currentActivePlayable) {
+          const pauseOverlay = document.getElementById('pause-overlay-' + currentActivePlayable);
+          if (pauseOverlay && !pauseOverlay.classList.contains('active')) {
+            togglePausePlayable(currentActivePlayable);
+          }
+        }
 
         video.play();
         overlay.classList.add('playing');

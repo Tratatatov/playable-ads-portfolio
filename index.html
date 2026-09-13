@@ -32,26 +32,15 @@
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
+      background:
+        radial-gradient(ellipse 80% 38% at 50% 0%, rgba(99, 102, 241, 0.14), transparent 70%),
+        radial-gradient(ellipse 50% 32% at 100% 45%, rgba(6, 182, 212, 0.08), transparent 75%),
+        var(--bg);
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.18), transparent),
-        radial-gradient(ellipse 60% 40% at 100% 40%, rgba(6, 182, 212, 0.12), transparent),
-        radial-gradient(ellipse 50% 30% at 0% 80%, rgba(139, 92, 246, 0.12), transparent);
-      transform: translateZ(0);
-      will-change: transform;
     }
 
     ::-webkit-scrollbar { width: 8px; }
@@ -76,14 +65,13 @@
       gap: 8px;
       padding: 6px 14px;
       border-radius: 100px;
-      background: rgba(99, 102, 241, 0.12);
+      background: rgba(31, 34, 68, 0.92);
       border: 1px solid rgba(99, 102, 241, 0.3);
       color: #a5b4fc;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.02em;
       margin-bottom: 20px;
-      backdrop-filter: blur(8px);
     }
 
     .badge-dot {
@@ -181,7 +169,6 @@
       background: rgba(255, 255, 255, 0.05);
       color: #f1f5f9;
       border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
     }
 
     .btn-secondary:hover {
@@ -259,7 +246,8 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
-      backdrop-filter: blur(4px);
+      contain: layout paint;
+      isolation: isolate;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -443,13 +431,14 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       margin-bottom: 64px;
+      content-visibility: auto;
+      contain-intrinsic-size: 1200px;
     }
 
     .pause-overlay {
       position: absolute;
       inset: 0;
       background: rgba(9, 10, 15, 0.85);
-      backdrop-filter: blur(8px);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -520,7 +509,6 @@
       justify-content: center;
       color: #ef4444;
       z-index: 25;
-      backdrop-filter: blur(8px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       pointer-events: none;
     }
@@ -549,13 +537,11 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(9, 10, 15, 0.45) 0%, rgba(9, 10, 15, 0.8) 55%, rgba(9, 10, 15, 0.96) 100%);
-      backdrop-filter: blur(2px);
       transition: all 0.3s ease;
     }
 
     .playable-cover:hover .cover-backdrop {
       background: linear-gradient(180deg, rgba(9, 10, 15, 0.3) 0%, rgba(9, 10, 15, 0.65) 55%, rgba(9, 10, 15, 0.9) 100%);
-      backdrop-filter: blur(1px);
     }
 
     .cover-content {
@@ -625,7 +611,6 @@
       position: absolute;
       inset: 0;
       background: rgba(9, 10, 15, 0.92);
-      backdrop-filter: blur(8px);
       z-index: 35;
       display: flex;
       flex-direction: column;
@@ -735,7 +720,9 @@
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 10px;
-      backdrop-filter: blur(4px);
+      content-visibility: auto;
+      contain: layout paint;
+      contain-intrinsic-size: 320px 590px;
       display: flex;
       flex-direction: column;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -786,7 +773,6 @@
       height: 54px;
       border-radius: 50%;
       background: rgba(99, 102, 241, 0.85);
-      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -804,7 +790,6 @@
       bottom: 12px;
       right: 12px;
       background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
       font-size: 12px;
       font-weight: 600;
       padding: 3px 8px;
@@ -837,7 +822,6 @@
       border-radius: var(--radius);
       padding: 40px;
       margin-bottom: 64px;
-      backdrop-filter: blur(4px);
     }
 
     .skills-grid {
@@ -911,7 +895,6 @@
       border-radius: 28px;
       padding: 48px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -944,7 +927,6 @@
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -1023,6 +1005,15 @@
     .toast.show {
       transform: translateY(0);
       opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
@@ -1228,14 +1219,14 @@
           <div class="video-player-box">
             <video 
               id="vid-main"
+              src="videos/pickmeup_main.mp4"
               poster="thumbnails/pickmeup_main.jpg"
-              preload="metadata"
+              preload="none"
               playsinline
               loop
               muted
               onclick="toggleVideoPlay(this)"
             >
-              <source src="videos/pickmeup_main.mp4" type="video/mp4">
             </video>
             <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-main'))">
               <div class="play-circle">
@@ -1251,14 +1242,14 @@
           <div class="video-player-box">
             <video 
               id="vid-taxis"
+              src="videos/pickmeup_two_taxis.mp4"
               poster="thumbnails/pickmeup_two_taxis.jpg"
-              preload="metadata"
+              preload="none"
               playsinline
               loop
               muted
               onclick="toggleVideoPlay(this)"
             >
-              <source src="videos/pickmeup_two_taxis.mp4" type="video/mp4">
             </video>
             <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-taxis'))">
               <div class="play-circle">
@@ -1274,14 +1265,14 @@
           <div class="video-player-box">
             <video 
               id="vid-sportcar"
+              src="videos/pickmeup_sportcar.mp4"
               poster="thumbnails/pickmeup_sportcar.jpg"
-              preload="metadata"
+              preload="none"
               playsinline
               loop
               muted
               onclick="toggleVideoPlay(this)"
             >
-              <source src="videos/pickmeup_sportcar.mp4" type="video/mp4">
             </video>
             <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-sportcar'))">
               <div class="play-circle">
@@ -1297,14 +1288,14 @@
           <div class="video-player-box">
             <video 
               id="vid-tram"
+              src="videos/pickmeup_tram.mp4"
               poster="thumbnails/pickmeup_tram.jpg"
-              preload="metadata"
+              preload="none"
               playsinline
               loop
               muted
               onclick="toggleVideoPlay(this)"
             >
-              <source src="videos/pickmeup_tram.mp4" type="video/mp4">
             </video>
             <div class="video-overlay-play" onclick="toggleVideoPlay(document.getElementById('vid-tram'))">
               <div class="play-circle">
@@ -1330,6 +1321,48 @@
       cleaner: true,
       hole: true
     };
+
+    const automaticPauseStates = {
+      cleaner: false,
+      hole: false
+    };
+
+    function setPlayableEnginePaused(id, paused) {
+      const iframe = document.getElementById('iframe-' + id);
+      if (!iframe || iframe.src === 'about:blank') return;
+
+      try {
+        const win = iframe.contentWindow;
+        if (!win) return;
+
+        // Cocos Creator 2 exposes `cc` globally; Creator 3 exposes it through SystemJS.
+        const applyToEngine = (module) => {
+          const game = module && module.game;
+          if (!game) return;
+          try {
+            if (paused && typeof game.pause === 'function') game.pause();
+            if (!paused && typeof game.resume === 'function') game.resume();
+          } catch(e) {}
+        };
+
+        applyToEngine(win.cc);
+        if (win.System && typeof win.System.import === 'function') {
+          win.System.import('cc').then(applyToEngine).catch(() => {});
+        }
+
+        // The packaged playables already expose this audio controller.
+        if (typeof win.__setPlayableMuted === 'function') {
+          win.__setPlayableMuted(paused || !soundStates[id]);
+        }
+      } catch(e) {}
+
+      try {
+        iframe.contentWindow.postMessage({
+          type: paused ? 'pause' : 'resume',
+          action: paused ? 'pause' : 'resume'
+        }, '*');
+      } catch(e) {}
+    }
 
     function activatePlayable(id) {
       if (currentActivePlayable === id) {
@@ -1370,6 +1403,10 @@
         const dataSrc = iframe.getAttribute('data-src');
         iframe.onload = function() {
           if (loader) loader.style.display = 'none';
+          if (automaticPauseStates[id] || document.hidden) {
+            automaticPauseStates[id] = true;
+            setPlayableEnginePaused(id, true);
+          }
         };
         iframe.src = dataSrc;
       }
@@ -1422,6 +1459,7 @@
       if (currentActivePlayable === id) {
         currentActivePlayable = null;
       }
+      automaticPauseStates[id] = false;
 
       if (!isSwitching) {
         showToast('Симулятор выключен');
@@ -1450,20 +1488,16 @@
         btn.classList.add('btn-paused');
         iframe.style.pointerEvents = 'none';
         iframe.style.filter = 'blur(2px) brightness(0.6)';
-        try {
-          iframe.contentWindow.postMessage({ type: 'pause', action: 'pause' }, '*');
-          iframe.contentWindow.postMessage('pause', '*');
-        } catch(e) {}
+        automaticPauseStates[id] = false;
+        setPlayableEnginePaused(id, true);
         showToast('Плейабл на паузе');
       } else {
         btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Пауза';
         btn.classList.remove('btn-paused');
         iframe.style.pointerEvents = 'auto';
         iframe.style.filter = 'none';
-        try {
-          iframe.contentWindow.postMessage({ type: 'resume', action: 'resume' }, '*');
-          iframe.contentWindow.postMessage('resume', '*');
-        } catch(e) {}
+        automaticPauseStates[id] = false;
+        setPlayableEnginePaused(id, false);
         showToast('Игра продолжается');
       }
     }
@@ -1542,8 +1576,12 @@
           }
         }
 
-        video.play();
-        overlay.classList.add('playing');
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.then(() => overlay.classList.add('playing')).catch(() => {});
+        } else {
+          overlay.classList.add('playing');
+        }
       } else {
         video.pause();
         overlay.classList.remove('playing');
@@ -1575,6 +1613,42 @@
         toast.classList.remove('show');
       }, 2500);
     }
+
+    const playableObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.id.replace('card-', '');
+        if (currentActivePlayable !== id) return;
+
+        const manualOverlay = document.getElementById('pause-overlay-' + id);
+        const manuallyPaused = manualOverlay && manualOverlay.classList.contains('active');
+        const shouldPause = !entry.isIntersecting || entry.intersectionRatio < 0.08;
+
+        if (shouldPause && !manuallyPaused && !automaticPauseStates[id]) {
+          automaticPauseStates[id] = true;
+          setPlayableEnginePaused(id, true);
+        } else if (!shouldPause && automaticPauseStates[id] && !document.hidden) {
+          automaticPauseStates[id] = false;
+          setPlayableEnginePaused(id, false);
+        }
+      });
+    }, { threshold: [0, 0.08] });
+
+    document.querySelectorAll('.playable-card').forEach((card) => playableObserver.observe(card));
+
+    document.addEventListener('visibilitychange', () => {
+      if (!currentActivePlayable) return;
+      const id = currentActivePlayable;
+      const overlay = document.getElementById('pause-overlay-' + id);
+      const manuallyPaused = overlay && overlay.classList.contains('active');
+
+      if (document.hidden && !manuallyPaused) {
+        automaticPauseStates[id] = true;
+        setPlayableEnginePaused(id, true);
+      } else if (!document.hidden && automaticPauseStates[id]) {
+        automaticPauseStates[id] = false;
+        setPlayableEnginePaused(id, false);
+      }
+    });
   </script>
 </body>
 </html>

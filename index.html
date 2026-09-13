@@ -15,8 +15,8 @@
   <style>
     :root {
       --bg: #090a0f;
-      --bg-card: rgba(18, 20, 29, 0.75);
-      --bg-card-hover: rgba(28, 32, 48, 0.85);
+      --bg-card: rgba(16, 18, 27, 0.93);
+      --bg-card-hover: rgba(24, 28, 42, 0.96);
       --border: rgba(255, 255, 255, 0.08);
       --border-accent: rgba(99, 102, 241, 0.35);
       --primary: #6366f1;
@@ -37,11 +37,21 @@
       line-height: 1.6;
       overflow-x: hidden;
       min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
       background-image: 
         radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.18), transparent),
         radial-gradient(ellipse 60% 40% at 100% 40%, rgba(6, 182, 212, 0.12), transparent),
         radial-gradient(ellipse 50% 30% at 0% 80%, rgba(139, 92, 246, 0.12), transparent);
-      background-attachment: fixed;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     ::-webkit-scrollbar { width: 8px; }
@@ -235,7 +245,7 @@
 
     .playables-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 32px;
       margin-bottom: 64px;
     }
@@ -249,11 +259,11 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(4px);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
       transition: border-color 0.25s, box-shadow 0.25s;
     }
 
@@ -315,21 +325,37 @@
     }
 
     .phone-frame {
-      width: 408px;
-      height: 862px;
+      width: 336px;
+      height: 708px;
       max-width: 100%;
-      aspect-ratio: 408 / 862;
+      aspect-ratio: 390 / 844;
       background: #000000;
-      border-radius: 48px;
-      border: 9px solid #232632;
+      border-radius: 44px;
+      border: 8px solid #232632;
       box-shadow: 
         0 0 0 2px #383c4e,
-        0 25px 50px -12px rgba(0, 0, 0, 0.7),
-        0 0 35px rgba(99, 102, 241, 0.18);
+        0 20px 45px -12px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(99, 102, 241, 0.16);
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .phone-frame.res-320 {
+      width: 336px;
+      height: 708px;
+    }
+
+    .phone-frame.res-360 {
+      width: 376px;
+      height: 796px;
+    }
+
+    .phone-frame.res-390 {
+      width: 408px;
+      height: 862px;
     }
 
     .phone-island {
@@ -661,13 +687,55 @@
       border-color: rgba(239, 68, 68, 0.6);
     }
 
+    .res-selector-box {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px 6px;
+      margin-top: 4px;
+    }
+
+    .res-selector-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0 4px;
+    }
+
+    .res-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .res-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .res-btn.active {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.5);
+      color: #c7d2fe;
+    }
 
     .video-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 10px;
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(4px);
       display: flex;
       flex-direction: column;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -764,12 +832,12 @@
     }
 
     .tech-section {
-      background: linear-gradient(180deg, rgba(18, 20, 29, 0.6), rgba(12, 14, 20, 0.9));
+      background: linear-gradient(180deg, rgba(18, 20, 29, 0.85), rgba(12, 14, 20, 0.95));
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 40px;
       margin-bottom: 64px;
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(4px);
     }
 
     .skills-grid {
@@ -838,12 +906,12 @@
     .contact-card {
       background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15), transparent 50%),
                   radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.12), transparent 50%),
-                  rgba(18, 20, 29, 0.85);
+                  rgba(18, 20, 29, 0.94);
       border: 1px solid rgba(99, 102, 241, 0.3);
       border-radius: 28px;
       padding: 48px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(4px);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -986,7 +1054,7 @@
         <!-- Playable 1: Cleaner -->
         <div class="playable-card" id="card-cleaner">
           <div class="device-wrapper">
-            <div class="phone-frame" id="phone-cleaner">
+            <div class="phone-frame res-320" id="phone-cleaner">
               <div class="phone-island"><div class="camera-lens"></div></div>
               <div class="iframe-container">
                 <!-- Cover preview poster (Click to launch) -->
@@ -1030,6 +1098,13 @@
             </div>
           </div>
 
+          <div class="res-selector-box">
+            <span class="res-selector-title">Разрешение:</span>
+            <button class="res-btn active" id="btn-res-320-cleaner" onclick="setSimulatorResolution('cleaner', '320')">320p (Эко 60 FPS)</button>
+            <button class="res-btn" id="btn-res-360-cleaner" onclick="setSimulatorResolution('cleaner', '360')">360p</button>
+            <button class="res-btn" id="btn-res-390-cleaner" onclick="setSimulatorResolution('cleaner', '390')">390p (Full)</button>
+          </div>
+
           <div class="device-controls">
             <button id="start-btn-cleaner" class="ctrl-btn btn-launch" onclick="activatePlayable('cleaner')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1059,7 +1134,7 @@
         <!-- Playable 2: Hole Game -->
         <div class="playable-card" id="card-hole">
           <div class="device-wrapper">
-            <div class="phone-frame" id="phone-hole">
+            <div class="phone-frame res-320" id="phone-hole">
               <div class="phone-island"><div class="camera-lens"></div></div>
               <div class="iframe-container">
                 <!-- Cover preview poster (Click to launch) -->
@@ -1101,6 +1176,13 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="res-selector-box">
+            <span class="res-selector-title">Разрешение:</span>
+            <button class="res-btn active" id="btn-res-320-hole" onclick="setSimulatorResolution('hole', '320')">320p (Эко 60 FPS)</button>
+            <button class="res-btn" id="btn-res-360-hole" onclick="setSimulatorResolution('hole', '360')">360p</button>
+            <button class="res-btn" id="btn-res-390-hole" onclick="setSimulatorResolution('hole', '390')">390p (Full)</button>
           </div>
 
           <div class="device-controls">
@@ -1466,6 +1548,23 @@
         video.pause();
         overlay.classList.remove('playing');
       }
+    }
+
+    function setSimulatorResolution(id, res) {
+      const phone = document.getElementById('phone-' + id);
+      if (!phone) return;
+
+      phone.classList.remove('res-320', 'res-360', 'res-390');
+      phone.classList.add('res-' + res);
+
+      const card = document.getElementById('card-' + id);
+      if (card) {
+        card.querySelectorAll('.res-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById('btn-res-' + res + '-' + id);
+        if (activeBtn) activeBtn.classList.add('active');
+      }
+
+      showToast('Разрешение ' + res + 'p установлено');
     }
 
     function showToast(text) {

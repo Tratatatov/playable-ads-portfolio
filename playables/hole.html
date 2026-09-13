@@ -17,6 +17,12 @@
 </style>
 <script>
 (function() {
+  try {
+    Object.defineProperty(window, 'devicePixelRatio', {
+      get: function() { return 1.0; },
+      configurable: true
+    });
+  } catch(e) {}
   window.__isPlayableMuted = false;
   var allContexts = new Set();
   var allGainNodes = new Set();

@@ -1212,6 +1212,87 @@
           </div>
         </div>
 
+
+        <!-- Playable: Stillfront Intercept -->
+        <div class="playable-card" id="card-stillfront">
+          <div class="device-wrapper">
+            <div class="phone-frame res-720" id="phone-stillfront">
+              <div class="phone-island"><div class="camera-lens"></div></div>
+              <div class="iframe-container">
+                <!-- Cover preview poster (Click to launch) -->
+                <div id="cover-stillfront" class="playable-cover" style="background-image: url('thumbnails/stillfront_cover.jpg');" onclick="activatePlayable('stillfront')">
+                  <div class="cover-backdrop"></div>
+                  <div class="cover-content">
+                    <div class="cover-badge">Cocos WebGL</div>
+                    <div class="cover-play-btn">
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    </div>
+                    <div class="cover-title">Stillfront: Intercept</div>
+                    <div class="cover-hint">Нажмите для запуска симулятора</div>
+                  </div>
+                </div>
+
+                <!-- Loading spinner -->
+                <div id="loader-stillfront" class="playable-loader" style="display: none;">
+                  <div class="spinner"></div>
+                  <div class="loader-text">Загрузка Stillfront: Intercept...</div>
+                </div>
+
+                <iframe 
+                  id="iframe-stillfront"
+                  class="playable-iframe"
+                  src="about:blank"
+                  data-src="playables/stillfront.html?v=1"
+                  scrolling="no"
+                  allow="autoplay; fullscreen"
+                ></iframe>
+                <div id="mute-badge-stillfront" class="phone-mute-badge" style="display: none;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                </div>
+                <div id="pause-overlay-stillfront" class="pause-overlay" onclick="togglePausePlayable('stillfront')">
+                  <div class="pause-circle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </div>
+                  <div class="pause-text">На паузе</div>
+                  <div class="pause-subtext">Нажмите в любое место, чтобы продолжить</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="res-selector-box">
+            <span class="res-selector-title">Разрешение:</span>
+            <button class="res-btn active" id="btn-res-720-stillfront" onclick="setSimulatorResolution('stillfront', '720')">720p</button>
+            <button class="res-btn" id="btn-res-900-stillfront" onclick="setSimulatorResolution('stillfront', '900')">900p</button>
+            <button class="res-btn" id="btn-res-1080-stillfront" onclick="setSimulatorResolution('stillfront', '1080')">1080p (Full)</button>
+          </div>
+
+          <div class="device-controls">
+            <button id="start-btn-stillfront" class="ctrl-btn btn-launch" onclick="activatePlayable('stillfront')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Запустить симулятор
+            </button>
+            <div id="active-controls-stillfront" class="active-controls-group" style="display: none;">
+              <button id="btn-pause-stillfront" class="ctrl-btn" onclick="togglePausePlayable('stillfront')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                Пауза
+              </button>
+              <button class="ctrl-btn" onclick="reloadPlayable('stillfront')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Рестарт
+              </button>
+              <button id="btn-sound-stillfront" class="ctrl-btn" onclick="toggleSoundPlayable('stillfront')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                Звук
+              </button>
+              <button class="ctrl-btn btn-stop" onclick="deactivatePlayable('stillfront')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+                Выключить
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -1329,12 +1410,14 @@
 
     const soundStates = {
       cleaner: true,
-      hole: true
+      hole: true,
+      stillfront: true
     };
 
     const automaticPauseStates = {
       cleaner: false,
-      hole: false
+      hole: false,
+      stillfront: false
     };
 
     function setPlayableEnginePaused(id, paused) {
@@ -1421,7 +1504,7 @@
         iframe.src = dataSrc;
       }
 
-      showToast('Запущен симулятор: ' + (id === 'cleaner' ? 'Cleaner 3D' : 'Hole Game 3D'));
+      showToast('Запущен симулятор: ' + ({ cleaner: 'Cleaner 3D', hole: 'Hole Game 3D', stillfront: 'Stillfront: Intercept' }[id] || id));
     }
 
     function deactivatePlayable(id, isSwitching = false) {
